@@ -38,28 +38,50 @@ public class Projectile : MonoBehaviour
     }
     public void SetDirection(float _direction)
     {
-        lifetime = 0;
-        if (boxCollider == null)
-           boxCollider = GetComponent<BoxCollider2D>();
+        // direction = _direction;
+        // lifetime = 0;
+        // if (boxCollider == null)
+        //    boxCollider = GetComponent<BoxCollider2D>();
         
         
+        
+
+        // gameObject.SetActive(true);
+
+        // hit = false;
+
+        // boxCollider.enabled = true;
+
+        // float localScaleX = transform.localScale.x;
+        // if(MathF.Sign(localScaleX) != _direction)
+        // {
+        //     localScaleX= -localScaleX; // this flips the ball 
+        // }
+        //    transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
         direction = _direction;
+    lifetime = 0;
+    hit = false;
 
-        gameObject.SetActive(true);
+    if (boxCollider == null)
+        boxCollider = GetComponent<BoxCollider2D>();
 
-        hit = false;
+    boxCollider.enabled = true;
+    gameObject.SetActive(true);
 
-        boxCollider.enabled = true;
-
-        float localScaleX = transform.localScale.x;
-        if(MathF.Sign(localScaleX) != _direction)
-        {
-            localScaleX= -localScaleX; // this flips the ball 
-        }
-           transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
+    float localScaleX = transform.localScale.x;
+    if (Mathf.Sign(localScaleX) != _direction)
+          localScaleX = -localScaleX;
+ 
+      transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
     }
      private void Deactivate()
     {
         gameObject.SetActive(false);
     }
+    private void OnDisable()
+{
+    hit = false;
+    direction = 0;
+    lifetime = 0;
+}
 }

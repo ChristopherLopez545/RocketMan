@@ -1,61 +1,41 @@
-using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
-    [SerializeField] private float speed ;
-    [SerializeField] private float JumpMultiplier;
-     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
-    private float HorizontalInput;
+
+    private float horizontalInput;
     private BoxCollider2D boxCollider;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-         boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
-
-    // Update is called once per frame
     void Update()
     {
-         HorizontalInput = Input.GetAxis("Horizontal");
-        body.linearVelocity = new Vector2(HorizontalInput * speed,body.linearVelocityY);
-        if(Input.GetKey(KeyCode.Space))
+        // Only jump if grounded
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
         {
-            body.linearVelocity = new Vector2(body.linearVelocityX,speed);
-        }
-        // flipping the character
-        if(HorizontalInput > 0.01f)
-        {  
-            transform.localScale =new Vector3(4.78818f,4.060786f,1);
-         }
-         else if(HorizontalInput < -0.01f )
-         {
-            transform.localScale = new Vector3(-4.78818f,4.060786f,1);
-         }
-
-        if(Input.GetKey(KeyCode.A))
-        {
-
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
         }
     }
 
     private bool isGrounded()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
-        return raycastHit.collider != null;
+        RaycastHit2D hit = Physics2D.BoxCast(
+            boxCollider.bounds.center,
+            boxCollider.bounds.size,
+            0f,
+            Vector2.down,
+            0.1f,
+            groundLayer
+        );
+        return hit.collider != null;
     }
-     private bool onWall()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
-        return raycastHit.collider != null;
-    }
-    public bool canAttack()
-    {
-        return HorizontalInput == 0;
-    }
-
 }
