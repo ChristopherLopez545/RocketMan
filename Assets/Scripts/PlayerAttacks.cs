@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-
+using UnityEngine.InputSystem;
 public class PlayerAttacks : MonoBehaviour
 {
     [SerializeField] float attackCooldown;
@@ -28,7 +28,7 @@ public class PlayerAttacks : MonoBehaviour
         {
                 attack();
         }
-       if (Input.GetMouseButtonDown(1) && powerShots.Count > 0)
+       if (/*(Input.GetMouseButtonDown(1)*/ Input.GetKeyDown(KeyCode.LeftShift) && powerShots.Count > 0)
 {
     GameObject shot = Instantiate(powerShots[0], firePoint.position, Quaternion.identity);
     shot.GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));

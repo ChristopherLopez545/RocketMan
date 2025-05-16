@@ -12,7 +12,7 @@ public class GameOver : MonoBehaviour
                 gameOverPanel.SetActive(true);
             }
     }
-    public void Restart()
+    public static void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
